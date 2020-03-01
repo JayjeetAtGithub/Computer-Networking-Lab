@@ -38,7 +38,7 @@ char *list_dir(char path[MAX_SIZE])
 
 int main(int argc, char **argv) { 
 	int sockfd, portno, e, optval;
-    socklen_t len;
+    socklen_t clilen;
 	char buffer[MAX_SIZE]; 
 	struct sockaddr_in servaddr, cliaddr;
     
@@ -80,11 +80,11 @@ int main(int argc, char **argv) {
     }
 	
     // recv path from client
-    len = sizeof(cliaddr);
+    clilen = sizeof(cliaddr);
 
     while (1) {
         // recieve data from client
-        e = recvfrom(sockfd, (char *)buffer, MAX_SIZE, 0, (struct sockaddr *) &servaddr, &len);
+        e = recvfrom(sockfd, (char *)buffer, MAX_SIZE, 0, (struct sockaddr *) &cliaddr, &clilen);
         if (e < 0) {
             perror("can't receive data from client.\n\n");
         }
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
         char *result = list_dir(buffer);
         
         // send list of file to client.
-        e = sendto(sockfd, result, strlen(result), 0, (const struct sockaddr *) &cliaddr, len);
+        e = sendto(sockfd, result, strlen(result), 0, (const struct sockaddr *) &cliaddr, clilen);
         if (e < 0) {
             perror("can't send data to client.\n\n");
         }
