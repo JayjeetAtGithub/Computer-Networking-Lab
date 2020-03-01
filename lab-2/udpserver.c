@@ -10,8 +10,7 @@
 
 #define MAX_SIZE  1024 
 
-char *list_dir(char path[MAX_SIZE])
-{
+char *list_dir(char path[MAX_SIZE]) {
     int len;
     len = strlen(path) - 1;
     char *str;
@@ -25,14 +24,15 @@ char *list_dir(char path[MAX_SIZE])
     DIR *d;
     struct dirent *dir;
     d = opendir(str);
-    if (d)
-    {
-        while ((dir = readdir(d)) != NULL)
-        {
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
             strcat(result, dir->d_name);
         }
         closedir(d);
-    }
+    } else {
+        return "ENOENT: No such file or directory.";
+        closedir(d);
+    } 
     return result;
 }
 
@@ -84,6 +84,7 @@ int main(int argc, char **argv) {
 
     while (1) {
         // recieve data from client
+        bzero(buffer, MAX_SIZE);
         e = recvfrom(sockfd, (char *)buffer, MAX_SIZE, 0, (struct sockaddr *) &cliaddr, &clilen);
         if (e < 0) {
             perror("can't receive data from client.\n\n");
