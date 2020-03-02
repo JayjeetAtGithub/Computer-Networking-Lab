@@ -120,7 +120,6 @@ int main(int argc, char **argv) {
 	for (int i = 0; i < MAX_CONN; i++) {
 		clilen = sizeof(cliaddrs[i]);
 
-		// failing in this accept statement.
 		connfds[i] = accept(sockfd, (struct sockaddr *)&cliaddrs[i], &clilen); 
 		if (connfds[i] < 0) { 
 			perror("server acccept failed...\n"); 
