@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
 		}
 
 		pthread_create(&tid[i], NULL, driver_thread, (void *)connfds[i]);
-		// pthread_join(&tid[i], NULL);
+		pthread_join(&tid[i], NULL);
 	}
 
 	// close the server socket file descriptor
